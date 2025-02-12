@@ -64,6 +64,13 @@ func (r *SearchReconciler) MetricsRoleBinding(instance *searchv1alpha1.Search) *
 	return crb
 }
 
+func (r *SearchReconciler) CollectorServiceMonitor(instance *searchv1alpha1.Search,
+	deployment string, namespace string) *monitorv1.ServiceMonitor {
+	cr := r.ServiceMonitor(instance, deployment, namespace)
+	cr.Spec.Endpoints[0].Scheme = "http"
+	return cr
+}
+
 func (r *SearchReconciler) ServiceMonitor(instance *searchv1alpha1.Search,
 	deployment string, namespace string) *monitorv1.ServiceMonitor {
 	smName := deployment + "-monitor"
